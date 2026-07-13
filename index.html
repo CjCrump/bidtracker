@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bid Trail</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <div id="search-panel">
+      <p id="origin-status">Locating you…</p>
+
+      <div id="stops-list"></div>
+
+      <button id="add-stop-btn" type="button">+ Add stop</button>
+      <button id="find-route-btn" type="button">Find fastest route</button>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="route-panel" class="hidden">
+      <div class="stat">
+        <span id="eta-value" class="stat-value">--</span>
+        <span class="stat-label">min</span>
+      </div>
+      <div class="stat">
+        <span id="distance-value" class="stat-value">--</span>
+        <span class="stat-label">mi</span>
+      </div>
+    </div>
+  </div>
+
+  <template id="stop-row-template">
+    <div class="stop-row">
+      <input type="text" class="stop-input" placeholder="Enter address" autocomplete="off">
+      <button type="button" class="remove-stop-btn" aria-label="Remove stop">&times;</button>
+      <ul class="suggestions"></ul>
+    </div>
+  </template>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
