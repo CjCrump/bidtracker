@@ -28,18 +28,42 @@
 
     <section id="view-map" class="view">
       <div id="map-toolbar">
-        <select id="map-status-filter">
-          <option value="walkdown">Walk-down</option>
-          <option value="estimate">Estimate</option>
-          <option value="sent">Sent</option>
-          <option value="scheduled">Scheduled</option>
-          <option value="done">Done</option>
-          <option value="lost">Lost</option>
-          <option value="all">All</option>
-        </select>
-        <button id="route-btn" type="button">Route these jobs</button>
+        <button id="route-panel-toggle" type="button">Route ▾</button>
         <span id="map-status"></span>
       </div>
+
+      <div id="route-panel" class="hidden">
+        <div class="route-row">
+          <span class="route-label">Start</span>
+          <button class="route-opt active" data-start-mode="gps" type="button">My location</button>
+          <button class="route-opt" data-start-mode="job" type="button">Choose job</button>
+        </div>
+        <select id="start-job-select" class="job-select hidden"></select>
+
+        <div class="route-row">
+          <span class="route-label">Include</span>
+        </div>
+        <div id="status-chip-row" class="chip-row"></div>
+
+        <div class="route-row">
+          <span class="route-label">Stops</span>
+        </div>
+        <div id="stop-chip-row" class="chip-row"></div>
+
+        <div class="route-row">
+          <span class="route-label">End</span>
+          <button class="route-opt active" data-end-mode="optimize" type="button">Optimize</button>
+          <button class="route-opt" data-end-mode="roundtrip" type="button">Round trip</button>
+          <button class="route-opt" data-end-mode="job" type="button">Choose job</button>
+        </div>
+        <select id="end-job-select" class="job-select hidden"></select>
+
+        <div class="route-actions">
+          <button id="clear-filters-btn" type="button">Clear filters</button>
+          <button id="route-btn" type="button">Route</button>
+        </div>
+      </div>
+
       <div id="map"></div>
     </section>
 
@@ -98,6 +122,8 @@
       </form>
     </div>
   </div>
+
+  <div id="toast" class="toast hidden"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="main.js"></script>

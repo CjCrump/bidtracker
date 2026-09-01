@@ -12,6 +12,24 @@ export const STATUSES = [
 let jobs = load();
 let listeners = [];
 
+// Auto-advance: once a job's walk-down date has passed, it moves from
+// Walk-down into Estimate automatically (Caleb: "once job has been walked
+// down ... move to bidding, all info leaves walk down and goes to send
+// estimate"). Manual status changes (dropdown/drag) still work anytime.
+function autoAdvance() {
+  const today = new Date().toISOString().slice(0, 10);
+  let changed = false;
+  jobs.forEach((job) => {
+    if (job.status === "walkdown" && job.walkdownDate && job.walkdownDate.slice(0, 10) <= today) {
+      job.status = "estimate";
+      job.updatedAt = new Date().toISOString();
+      changed = true;
+    }
+  });
+  if (changed) localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+}
+autoAdvance();
+
 function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
