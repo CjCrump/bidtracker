@@ -1,16 +1,18 @@
-import { STATUSES, getJobsByStatus, updateJob, statusMeta } from "./state.js";
+import { STATUSES, getJobsByStatus, updateJob } from "./state.js";
 import { openJobDetail } from "./jobDetail.js";
 
-// ---------- Board (kanban) ----------
-
 const boardEl = document.getElementById("board");
+const filterEl = document.getElementById("board-filter");
+let activeFilter = "walkdown";
 
 export function renderBoard() {
+  renderFilterPills();
   boardEl.innerHTML = "";
 
   STATUSES.forEach((status) => {
     const col = document.createElement("div");
     col.className = "board-col";
+    if (status.id !== activeFilter) col.classList.add("board-col-hidden");
     col.dataset.status = status.id;
     col.innerHTML = `
       <div class="board-col-header" style="border-color:${status.color}">
@@ -34,6 +36,25 @@ export function renderBoard() {
     });
 
     boardEl.appendChild(col);
+  });
+}
+
+// Mobile shows one status column at a time via these pills (hidden on desktop,
+// where all columns are visible side by side — see components.css).
+function renderFilterPills() {
+  filterEl.innerHTML = "";
+  STATUSES.forEach((status) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "board-filter-btn" + (status.id === activeFilter ? " active" : "");
+    btn.style.borderColor = status.color;
+    if (status.id === activeFilter) btn.style.background = status.color;
+    btn.textContent = status.label;
+    btn.addEventListener("click", () => {
+      activeFilter = status.id;
+      renderBoard();
+    });
+    filterEl.appendChild(btn);
   });
 }
 
@@ -61,51 +82,4 @@ function renderCard(job) {
   card.addEventListener("dragstart", (e) => e.dataTransfer.setData("text/job-id", job.id));
   card.addEventListener("click", () => openJobDetail(job.id));
   return card;
-}
-
-// ---------- Schedule (list of 'scheduled' jobs) ----------
-
-const scheduleListEl = document.getElementById("schedule-list");
-
-export function renderSchedule() {
-  scheduleListEl.innerHTML = "";
-  const jobs = getJobsByStatus("scheduled")
-    .filter((j) => j.scheduledStart)
-    .sort((a, b) => new Date(a.scheduledStart) - new Date(b.scheduledStart));
-
-  if (!jobs.length) {
-    scheduleListEl.innerHTML = '<p class="empty">No scheduled jobs yet.</p>';
-    return;
-  }
-
-  let lastDay = null;
-  jobs.forEach((job) => {
-    const start = new Date(job.scheduledStart);
-    const dayKey = start.toDateString();
-    if (dayKey !== lastDay) {
-      const heading = document.createElement("div");
-      heading.className = "schedule-day-heading";
-      heading.textContent = start.toLocaleDateString([], {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-      });
-      scheduleListEl.appendChild(heading);
-      lastDay = dayKey;
-    }
-
-    const row = document.createElement("div");
-    row.className = "schedule-row";
-    const end = job.scheduledEnd ? new Date(job.scheduledEnd) : null;
-    row.innerHTML = `
-      <span class="schedule-time">${start.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}${
-      end ? " – " + end.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : ""
-    }</span>
-      <span class="dot" style="background:${statusMeta(job.status).color}"></span>
-      <span class="schedule-name">${job.customerName || "Untitled job"}</span>
-      <span class="schedule-address">${job.address || ""}</span>
-    `;
-    row.addEventListener("click", () => openJobDetail(job.id));
-    scheduleListEl.appendChild(row);
-  });
 }

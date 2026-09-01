@@ -1,0 +1,141 @@
+#cal-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 12px 10px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+#cal-label {
+  font-weight: 700;
+  font-size: 14px;
+  flex: 1;
+  text-align: center;
+}
+
+#cal-prev,
+#cal-next,
+#cal-today {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cal-mode-switch {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  justify-content: center;
+}
+
+.cal-mode-btn {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #555;
+}
+
+.cal-mode-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+#cal-body {
+  flex: 1;
+  min-height: 0;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+/* Month grid */
+
+.cal-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  padding-bottom: 4px;
+}
+
+.cal-day-cell {
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 4px;
+  min-height: 56px;
+  cursor: pointer;
+  border: 1px solid #eee;
+}
+
+.cal-day-empty { background: transparent; border: none; cursor: default; }
+.cal-day-cell.today { border-color: #2563eb; }
+
+.cal-day-num { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+
+.cal-day-dots { display: flex; gap: 3px; flex-wrap: wrap; }
+
+.cal-day-more { font-size: 10px; color: #888; margin-top: 2px; }
+
+/* Week view — stacked days on mobile, side-by-side on desktop */
+
+.cal-week-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cal-week-col {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.cal-week-heading { font-weight: 700; font-size: 13px; margin-bottom: 6px; color: #333; }
+
+.cal-week-jobs { display: flex; flex-direction: column; gap: 6px; }
+
+/* Day view */
+
+.cal-day-heading { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+
+.cal-day-list { display: flex; flex-direction: column; gap: 6px; }
+
+/* Shared agenda row (week + day views) */
+
+.cal-agenda-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f8f9fb;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.cal-agenda-time { flex: 0 0 70px; color: #2563eb; font-weight: 600; font-size: 12px; }
+.cal-agenda-name { font-weight: 600; }
+
+/* ---------- Desktop ---------- */
+@media (min-width: 700px) {
+  #cal-toolbar { flex-wrap: nowrap; }
+  .cal-mode-switch { width: auto; }
+  .cal-week-grid { flex-direction: row; }
+  .cal-week-col { flex: 1; }
+}

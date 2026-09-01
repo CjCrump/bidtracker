@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="calendar.css">
 </head>
 <body>
 
@@ -14,11 +15,14 @@
     <button class="tab-btn active" data-view="board" type="button">Board</button>
     <button class="tab-btn" data-view="map" type="button">Map</button>
     <button class="tab-btn" data-view="schedule" type="button">Schedule</button>
-    <button id="add-job-btn" type="button">+ New job</button>
+    <button id="add-job-btn" type="button">
+      <span class="add-icon">+</span><span class="add-label">New job</span>
+    </button>
   </nav>
 
   <main id="views">
     <section id="view-board" class="view active">
+      <div id="board-filter"></div>
       <div id="board"></div>
     </section>
 
@@ -40,7 +44,18 @@
     </section>
 
     <section id="view-schedule" class="view">
-      <div id="schedule-list"></div>
+      <div id="cal-toolbar">
+        <button id="cal-prev" type="button" aria-label="Previous">&lsaquo;</button>
+        <span id="cal-label"></span>
+        <button id="cal-next" type="button" aria-label="Next">&rsaquo;</button>
+        <button id="cal-today" type="button">Today</button>
+        <div class="cal-mode-switch">
+          <button class="cal-mode-btn" data-mode="month" type="button">Month</button>
+          <button class="cal-mode-btn" data-mode="week" type="button">Week</button>
+          <button class="cal-mode-btn" data-mode="day" type="button">Day</button>
+        </div>
+      </div>
+      <div id="cal-body"></div>
     </section>
   </main>
 

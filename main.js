@@ -1,6 +1,7 @@
 import { subscribe, getJobsByStatus, STATUSES } from "./state.js";
 import { initMap, plotJobs, routeJobs, invalidate } from "./map.js";
-import { renderBoard, renderSchedule } from "./views.js";
+import { renderBoard } from "./board.js";
+import { initCalendar, renderCalendar } from "./calendar.js";
 import { initJobDetail, openJobDetail } from "./jobDetail.js";
 
 const tabs = document.querySelectorAll(".tab-btn");
@@ -14,6 +15,7 @@ init();
 function init() {
   initMap();
   initJobDetail();
+  initCalendar();
 
   document.getElementById("add-job-btn").addEventListener("click", () => openJobDetail(null));
   tabs.forEach((btn) => btn.addEventListener("click", () => switchView(btn.dataset.view)));
@@ -23,7 +25,7 @@ function init() {
 
   subscribe(() => {
     renderBoard();
-    renderSchedule();
+    renderCalendar();
     updateMapView();
   });
 }
